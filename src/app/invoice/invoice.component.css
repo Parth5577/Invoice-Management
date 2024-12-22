@@ -1,0 +1,64 @@
+.invoice-container {
+  padding: 20px;
+  background-color: #f0f0f0; /* Light gray background */
+  border-radius: 5px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.invoice-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.invoice-section {
+  margin-bottom: 24px;
+  border-top: 1px solid #ccc; /* Light gray border for sections */
+  padding-top: 16px;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+  max-width: 300px;
+}
+
+table {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.add-item-form {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+h3 {
+  margin-bottom: 16px;
+  color: #333; /* Darker gray for headings */
+}
+
+.mat-no-data-row td {
+  text-align: center;
+  font-style: italic;
+  color: gray;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+}

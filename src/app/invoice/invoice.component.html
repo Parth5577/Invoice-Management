@@ -1,0 +1,184 @@
+<div class="invoice-container">
+  <mat-toolbar color="primary" class="toolbar">
+    <span>Create Invoice</span>
+    <span class="spacer"></span>
+    <button mat-raised-button [color]="'accent'" (click)="saveInvoice()">
+      {{ invoiceId ? "Update Invoice" : "Save Invoice" }}
+    </button>
+  </mat-toolbar>
+
+  <form [formGroup]="invoiceForm" class="invoice-form">
+    <!-- Sender and Recipient Information -->
+    <section class="invoice-section">
+      <h3>Invoice Details</h3>
+
+      <mat-form-field appearance="fill">
+        <mat-label>From Name</mat-label>
+        <input matInput formControlName="fromName" />
+        <mat-error
+          *ngIf="
+            formControls['fromName'].hasError('required') &&
+            formControls['fromName'].touched
+          "
+        >
+          From Name is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            formControls['fromName'].hasError('maxlength') &&
+            formControls['fromName'].touched
+          "
+        >
+          From Name cannot exceed 500 characters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>From Address</mat-label>
+        <input matInput formControlName="fromAddress" />
+        <mat-error
+          *ngIf="
+            formControls['fromAddress'].hasError('required') &&
+            formControls['fromAddress'].touched
+          "
+        >
+          From Address is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            formControls['fromAddress'].hasError('maxlength') &&
+            formControls['fromAddress'].touched
+          "
+        >
+          From Address cannot exceed 500 characters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>To Name</mat-label>
+        <input matInput formControlName="toName" />
+        <mat-error
+          *ngIf="
+            formControls['toName'].hasError('required') &&
+            formControls['toName'].touched
+          "
+        >
+          To Name is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            formControls['toName'].hasError('maxlength') &&
+            formControls['toName'].touched
+          "
+        >
+          To Name cannot exceed 500 characters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>To Address</mat-label>
+        <input matInput formControlName="toAddress" />
+        <mat-error
+          *ngIf="
+            formControls['toAddress'].hasError('required') &&
+            formControls['toAddress'].touched
+          "
+        >
+          To Address is required.
+        </mat-error>
+        <mat-error
+          *ngIf="
+            formControls['toAddress'].hasError('maxlength') &&
+            formControls['toAddress'].touched
+          "
+        >
+          To Address cannot exceed 500 characters.
+        </mat-error>
+      </mat-form-field>
+    </section>
+
+    <!-- Invoice Items -->
+    <section class="invoice-section">
+      <h3>Invoice Items</h3>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container></ng-container>
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef>Item Name</th>
+          <td mat-cell *matCellDef="let item">{{ item.itemName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef>Rate</th>
+          <td mat-cell *matCellDef="let item">{{ item.rate | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let item">{{ item.total | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let item">
+            <button mat-button color="primary" (click)="editItem(item)">
+              <mat-icon class="material-symbols-outlined"> edit </mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr *matNoDataRow>
+          <td colspan="7" class="no-data">No data found.</td>
+        </tr>
+      </table>
+
+      <!-- Add Item -->
+      <div class="add-item-form" [formGroup]="newItemForm">
+        <mat-form-field appearance="fill">
+          <mat-label>Item Name</mat-label>
+          <input matInput formControlName="itemName" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Quantity</mat-label>
+          <input matInput type="number" formControlName="quantity" />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Rate</mat-label>
+          <input matInput type="number" formControlName="rate" />
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="isEdit ? updateItem() : addItem()"
+        >
+          {{ isEdit ? "Update Item" : "Add Item" }}
+        </button>
+
+        <button
+          *ngIf="isEdit"
+          mat-raised-button
+          color="primary"
+          (click)="cancelItem()"
+        >
+          cancel
+        </button>
+      </div>
+    </section>
+
+    <!-- Total Amount -->
+    <section class="invoice-section">
+      <h3>
+        Total Amount: {{ invoiceForm.get("totalAmount")?.value | currency }}
+      </h3>
+    </section>
+  </form>
+</div>

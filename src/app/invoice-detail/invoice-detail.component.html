@@ -1,0 +1,54 @@
+<div class="invoice-details-container">
+  <mat-toolbar color="primary" class="toolbar">
+    <span>Invoice Details</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="goBack()">back</button>
+  </mat-toolbar>
+
+  <div class="invoice-info-container" *ngIf="invoice">
+    <div class="invoice-header">
+      <h2>Invoice #{{ invoice.invoiceNumber }}</h2>
+      <p>
+        <strong>From:</strong> {{ invoice.fromName }} ({{
+          invoice.fromAddress
+        }})
+      </p>
+      <p><strong>To:</strong> {{ invoice.toName }} ({{ invoice.toAddress }})</p>
+      <p><strong>Invoice Date:</strong> {{ invoice.invoiceDate | date }}</p>
+      <p><strong>Total Amount:</strong> {{ invoice.totalAmount | currency }}</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="items-container">
+      <h3>Items</h3>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="itemName">
+          <th mat-header-cell *matHeaderCellDef>Item Name</th>
+          <td mat-cell *matCellDef="let item">{{ item.itemName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Quantity</th>
+          <td mat-cell *matCellDef="let item">{{ item.quantity }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef>Rate</th>
+          <td mat-cell *matCellDef="let item">{{ item.rate | currency }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef>Total</th>
+          <td mat-cell *matCellDef="let item">{{ item.total | currency }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="!invoice">Loading...</div>
+  <!-- Show loading message while fetching -->
+</div>
